@@ -12,7 +12,7 @@
 
 ## netio adapter for ioBroker
 
-Koukaam NETIO adapter
+Koukaam NETIO adapter. created by FeLIX
 
 ## Developer manual
 This section is intended for the developer. It can be deleted later

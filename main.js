@@ -59,6 +59,33 @@ class Netio extends utils.Adapter {
 			native: {},
 		});
 
+		await this.setObjectAsync("port1", {
+			type: "state",
+			common: {
+				name: "port1",
+				type: "boolean",
+				role: "indicator",
+				read: true,
+				write: true,
+			},
+			native: {},
+		});
+		
+		await this.setObjectAsync("port2", {
+			type: "state",
+			common: {
+				name: "port2",
+				type: "boolean",
+				role: "indicator",
+				read: true,
+				write: true,
+			},
+			native: {},
+		});
+		
+		
+
+
 		// in this template all states changes inside the adapters namespace are subscribed
 		this.subscribeStates("*");
 
@@ -71,10 +98,10 @@ class Netio extends utils.Adapter {
 
 		// same thing, but the value is flagged "ack"
 		// ack should be always set to true if the value is received from or acknowledged from the target system
-		await this.setStateAsync("testVariable", { val: true, ack: true });
+//		await this.setStateAsync("testVariable", { val: true, ack: true });
 
 		// same thing, but the state is deleted after 30s (getState will return null afterwards)
-		await this.setStateAsync("testVariable", { val: true, ack: true, expire: 30 });
+//		await this.setStateAsync("testVariable", { val: true, ack: true, expire: 30 });
 
 		// examples for the checkPassword/checkGroup functions
 		let result = await this.checkPasswordAsync("admin", "iobroker");
