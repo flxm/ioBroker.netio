@@ -1,0 +1,98 @@
+{
+	"common": {
+		"name": "netio",
+		"version": "0.0.1",
+		"news": {
+			"0.0.1": {
+				"en": "initial release",
+				"de": "Erstveröffentlichung",
+				"ru": "Начальная версия",
+				"pt": "lançamento inicial",
+				"nl": "Eerste uitgave",
+				"fr": "Première version",
+				"it": "Versione iniziale",
+				"es": "Versión inicial",
+				"pl": "Pierwsze wydanie",
+				"zh-cn": "首次出版"
+			}
+		},
+		"title": "NETIO",
+		"titleLang": {
+			"en": "NETIO",
+			"de": "NETIO",
+			"ru": "NETIO",
+			"pt": "NETIO",
+			"nl": "NETIO",
+			"fr": "NETIO",
+			"it": "NETIO",
+			"es": "NETIO",
+			"pl": "NETIO",
+			"zh-cn": "NETIO"
+		},
+		"desc": {
+			"en": "Koukaam NETIO adapter",
+			"de": "Koukaam NETIO Adapter",
+			"ru": "Адаптер Koukaam NETIO",
+			"pt": "Adaptador Koukaam NETIO",
+			"nl": "Koukaam NETIO-adapter",
+			"fr": "Koukaam NETIO adaptateur",
+			"it": "Adattatore NETIO Koukaam",
+			"es": "Adaptador Koukaam NETIO",
+			"pl": "Adapter Koukaam NETIO",
+			"zh-cn": "Koukaam NETIO适配器"
+		},
+		"authors": [
+			"FeLIX <git@felixm.net>"
+		],
+		"keywords": [
+			"ioBroker",
+			"adapter",
+			"netio"
+		],
+		"license": "MIT",
+		"platform": "Javascript/Node.js",
+		"main": "main.js",
+		"icon": "netio.png",
+		"enabled": true,
+		"extIcon": "https://raw.githubusercontent.com/flxm/ioBroker.netio/master/admin/netio.png",
+		"readme": "https://github.com/flxm/ioBroker.netio/blob/master/README.md",
+		"loglevel": "info",
+		"mode": "daemon",
+		"type": "iot-systems",
+		"compact": true,
+		"materialize": true,
+		"dependencies": [
+			{
+				"js-controller": ">=1.4.2"
+			}
+		]
+	},
+	"native": {
+		"option1": true,
+		"option2": "42"
+	},
+	"objects": [],
+	"instanceObjects": [
+		{
+			"_id": "info",
+			"type": "channel",
+			"common": {
+				"name": "Information"
+			},
+			"native": {}
+		},
+		{
+			"_id": "info.connection",
+			"type": "state",
+			"common": {
+				"role": "indicator.connected",
+				"name": "Device or service connected",
+				"type": "boolean",
+				"read": true,
+				"write": false,
+				"def": false
+			},
+			"native": {}
+		}
+	]
+}
