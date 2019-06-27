@@ -5,6 +5,7 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.netio.svg)](https://www.npmjs.com/package/iobroker.netio)
 [![Dependency Status](https://img.shields.io/david/flxm/iobroker.netio.svg)](https://david-dm.org/flxm/iobroker.netio)
 [![Known Vulnerabilities](https://snyk.io/test/github/flxm/ioBroker.netio/badge.svg)](https://snyk.io/test/github/flxm/ioBroker.netio)
+[![Build Status](https://travis-ci.org/flxm/iobroker.netio.svg?branch=master)](https://travis-ci.org/flxm/iobroker.netio)
 
 [![NPM](https://nodei.co/npm/iobroker.netio.png?downloads=true)](https://nodei.co/npm/iobroker.netio/)
 
