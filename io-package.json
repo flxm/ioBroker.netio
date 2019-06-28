@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "netio",
-		"version": "0.0.1",
+		"version": "0.0.2",
 		"news": {
 			"0.0.1": {
 				"en": "initial release",
@@ -30,8 +30,8 @@
 			"zh-cn": "NETIO"
 		},
 		"desc": {
-			"en": "Koukaam NETIO adapter",
-			"de": "Koukaam NETIO Adapter",
+			"en": "Koukaam NETIO adapter by FeLIX",
+			"de": "Koukaam NETIO Adapter by FeLIX",
 			"ru": "Адаптер Koukaam NETIO",
 			"pt": "Adaptador Koukaam NETIO",
 			"nl": "Koukaam NETIO-adapter",
@@ -69,7 +69,10 @@
 	},
 	"native": {
 		"option1": true,
-		"option2": "42"
+		"option2": "43",
+		"username": "admin",
+		"password": "admin",
+		"ip": "192.168.2.199"
 	},
 	"objects": [],
 	"instanceObjects": [

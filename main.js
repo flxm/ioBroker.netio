@@ -104,11 +104,11 @@ class Netio extends utils.Adapter {
 //		await this.setStateAsync("testVariable", { val: true, ack: true, expire: 30 });
 
 		// examples for the checkPassword/checkGroup functions
-		let result = await this.checkPasswordAsync("admin", "iobroker");
-		this.log.info("check user admin pw ioboker: " + result);
+//		let result = await this.checkPasswordAsync("admin", "iobroker");
+//		this.log.info("check user admin pw ioboker: " + result);
 
-		result = await this.checkGroupAsync("admin", "admin");
-		this.log.info("check group user admin group admin: " + result);
+//		result = await this.checkGroupAsync("admin", "admin");
+//		this.log.info("check group user admin group admin: " + result);
 	}
 
 	/**

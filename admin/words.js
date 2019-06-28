@@ -37,5 +37,43 @@ systemDictionary = {
 		"es": "opcion 2",
 		"pl": "Opcja 2",
 		"zh-cn": "选项2"
+	},
+	"username": {
+		"en": "username",
+		"de": "username",
+		"ru": "option2",
+		"pt": "opção 2",
+		"nl": "Optie 2",
+		"fr": "Option 2",
+		"it": "opzione 2",
+		"es": "opcion 2",
+		"pl": "Opcja 2",
+		"zh-cn": "选项2"
+	},
+	"password": {
+		"en": "password",
+		"de": "password",
+		"ru": "option2",
+		"pt": "opção 2",
+		"nl": "Optie 2",
+		"fr": "Option 2",
+		"it": "opzione 2",
+		"es": "opcion 2",
+		"pl": "Opcja 2",
+		"zh-cn": "选项2"
+	},
+	"ip": {
+		"en": "ip",
+		"de": "ip",
+		"ru": "option2",
+		"pt": "opção 2",
+		"nl": "Optie 2",
+		"fr": "Option 2",
+		"it": "opzione 2",
+		"es": "opcion 2",
+		"pl": "Opcja 2",
+		"zh-cn": "选项2"
 	}
+	
+	
 };
