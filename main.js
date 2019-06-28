@@ -7,6 +7,7 @@
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
 const utils = require("@iobroker/adapter-core");
+const request = require("request");
 
 // Load your modules here, e.g.:
 // const fs = require("fs");
@@ -47,6 +48,7 @@ class Netio extends utils.Adapter {
 		Here a simple template for a boolean variable named "testVariable"
 		Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
 		*/
+/*
 		await this.setObjectAsync("testVariable", {
 			type: "state",
 			common: {
@@ -58,7 +60,7 @@ class Netio extends utils.Adapter {
 			},
 			native: {},
 		});
-
+*/
 		await this.setObjectAsync("port1", {
 			type: "state",
 			common: {
@@ -82,6 +84,29 @@ class Netio extends utils.Adapter {
 			},
 			native: {},
 		});
+		await this.setObjectAsync("port3", {
+			type: "state",
+			common: {
+				name: "port3",
+				type: "boolean",
+				role: "indicator",
+				read: true,
+				write: true,
+			},
+			native: {},
+		});
+		await this.setObjectAsync("port4", {
+			type: "state",
+			common: {
+				name: "port4",
+				type: "boolean",
+				role: "indicator",
+				read: true,
+				write: true,
+			},
+			native: {},
+		});
+
 		
 		
 
@@ -89,12 +114,29 @@ class Netio extends utils.Adapter {
 		// in this template all states changes inside the adapters namespace are subscribed
 		this.subscribeStates("*");
 
+var that = this
+
+var x = request(`http://${this.config.netIoAddress}/tgi/control.tgi?login=p:${this.config.username}:${this.config.password}&port=list&quit=quit`, function (error, response, body) {
+that.log.info(body);
+var state = body.substr(6, 7).split(" ").map(x => x==1);
+for (var i=0; i<state.length; i++) {
+that.setState("port"+(i+1), state[i]);
+}
+/*
+that.setState("port1", state[0]);
+that.setState("port2", state[1]);
+that.setState("port3", state[2]);
+that.setState("port4", state[3]);
+*/
+});			
+
+
 		/*
 		setState examples
 		you will notice that each setState will cause the stateChange event to fire (because of above subscribeStates cmd)
 		*/
 		// the variable testVariable is set to true as command (ack=false)
-		await this.setStateAsync("testVariable", true);
+//		await this.setStateAsync("testVariable", true);
 
 		// same thing, but the value is flagged "ack"
 		// ack should be always set to true if the value is received from or acknowledged from the target system
@@ -109,6 +151,9 @@ class Netio extends utils.Adapter {
 
 //		result = await this.checkGroupAsync("admin", "admin");
 //		this.log.info("check group user admin group admin: " + result);
+
+		this.setState("info.connection", true, true);
+
 	}
 
 	/**
@@ -130,6 +175,7 @@ class Netio extends utils.Adapter {
 	 * @param {ioBroker.Object | null | undefined} obj
 	 */
 	onObjectChange(id, obj) {
+		this.log.info("YYY " + id + " " + JSON.stringify(obj))
 		if (obj) {
 			// The object was changed
 			this.log.info(`object ${id} changed: ${JSON.stringify(obj)}`);
@@ -145,9 +191,20 @@ class Netio extends utils.Adapter {
 	 * @param {ioBroker.State | null | undefined} state
 	 */
 	onStateChange(id, state) {
+		this.log.info("XXX " + id + " " + JSON.stringify(state))
 		if (state) {
 			// The state was changed
 			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+
+var s = ["u", "u", "u", "u"];
+var p = parseInt(id.substr(-1) - 1);
+s[p] = state.val ? "1" : "0";
+var list = s.join("");
+			
+var x = request(`http://${this.config.netIoAddress}/tgi/control.tgi?login=p:${this.config.username}:${this.config.password}&port=${list}&quit=quit`, function (error, response, body) {
+//this.log.info(body);
+});			
+			
 		} else {
 			// The state was deleted
 			this.log.info(`state ${id} deleted`);
