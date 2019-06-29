@@ -6,32 +6,28 @@ systemDictionary = {
 		"en": "Adapter settings for netio",
 		"de": "Adaptereinstellungen für netio"
 	},
-	"option1": {
-		"en": "option1",
-		"de": "Option 1"
-	},
-	"option2": {
-		"en": "option2",
-		"de": "Option 2"
-	},
 	"username": {
 		"en": "username",
-		"de": "username"
+		"de": "Username"
 	},
 	"password": {
 		"en": "password",
-		"de": "password"
+		"de": "Password"
 	},
 	"netIoAddress": {
-		"en": "ip",
-		"de": "ip"
+		"en": "ip address",
+		"de": "IP Adresse"
+	},
+	"netIoPort": {
+		"en": "port",
+		"de": "Port"
 	},
 	"polling": {
-		"en": "poll",
-		"de": "poll"
+		"en": "polling",
+		"de": "Polling"
 	},
 	"pollingInterval": {
 		"en": "interval",
-		"de": "interval"
+		"de": "Intervall"
 	}
 };
