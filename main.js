@@ -116,7 +116,7 @@ class Netio extends utils.Adapter {
 
 	const that = this;
 
-	const r = request(`http://${this.config.netIoAddress}/tgi/control.tgi?login=p:${this.config.username}:${this.config.password}&port=list&quit=quit`, function (error, response, body) {
+	const r = request(`http://${this.config.netIoAddress}:${this.config.netIoPort}/tgi/control.tgi?login=p:${this.config.username}:${this.config.password}&port=list&quit=quit`, function (error, response, body) {
 		that.log.info("E " + error + JSON.stringify(error))
 		that.log.info("R " + JSON.stringify(response))
 		that.log.info("B " + body);
@@ -136,7 +136,7 @@ class Netio extends utils.Adapter {
 
 	const get = function() {
 	//	that.log.info("GET");
-		const r = request(`http://${that.config.netIoAddress}/tgi/control.tgi?login=p:${that.config.username}:${that.config.password}&port=list&quit=quit`, function (error, response, body) {
+		const r = request(`http://${that.config.netIoAddress}:${that.config.netIoPort}/tgi/control.tgi?login=p:${that.config.username}:${that.config.password}&port=list&quit=quit`, function (error, response, body) {
 //		const r = request(`http://192.168.2.199/tgi/control.tgi?login=p:admin:admin&port=list&quit=quit`, function (error, response, body) {
 			that.log.info(body);
 			const state = body.substr(6, 7).split(" ").map(x => x==1);
@@ -224,12 +224,12 @@ class Netio extends utils.Adapter {
 			// The state was changed
 			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
 
-			var s = ["u", "u", "u", "u"];
-			var p = parseInt(id.substr(-1) - 1);
+			let s = ["u", "u", "u", "u"];
+			let p = parseInt(id.substr(-1) - 1);
 			s[p] = state.val ? "1" : "0";
-			var list = s.join("");
+			let list = s.join("");
 			
-			var x = request(`http://${this.config.netIoAddress}/tgi/control.tgi?login=p:${this.config.username}:${this.config.password}&port=${list}&quit=quit`, function (error, response, body) {
+			let r = request(`http://${this.config.netIoAddress}:${that.config.netIoPort}/tgi/control.tgi?login=p:${this.config.username}:${this.config.password}&port=${list}&quit=quit`, function (error, response, body) {
 				//this.log.info(body);
 			});			
 			

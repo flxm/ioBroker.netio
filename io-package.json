@@ -69,11 +69,10 @@
 		]
 	},
 	"native": {
-		"option1": true,
-		"option2": "43",
 		"username": "admin",
 		"password": "admin",
 		"netIoAddress": "192.168.2.199",
+		"netIoPort": 80,
 	        "polling": true,
                 "pollingInterval": 10
 	},
