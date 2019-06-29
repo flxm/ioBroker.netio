@@ -40,27 +40,27 @@ class Netio extends utils.Adapter {
 
 		// The adapters config (in the instance object everything under the attribute "native") is accessible via
 		// this.config:
-		this.log.info("config option1: " + this.config.option1);
-		this.log.info("config option2: " + this.config.option2);
+//		this.log.info("config option1: " + this.config.option1);
+//		this.log.info("config option2: " + this.config.option2);
 
 		/*
 		For every state in the system there has to be also an object of type state
 		Here a simple template for a boolean variable named "testVariable"
 		Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
 		*/
-/*
-		await this.setObjectAsync("testVariable", {
+
+		await this.setObjectAsync("error", {
 			type: "state",
 			common: {
-				name: "testVariable",
-				type: "boolean",
+				name: "error",
+				type: "string",
 				role: "indicator",
 				read: true,
-				write: true,
+				write: false,
 			},
 			native: {},
 		});
-*/
+
 		await this.setObjectAsync("port1", {
 			type: "state",
 			common: {
@@ -114,22 +114,50 @@ class Netio extends utils.Adapter {
 		// in this template all states changes inside the adapters namespace are subscribed
 		this.subscribeStates("*");
 
-var that = this
+	const that = this;
 
-var x = request(`http://${this.config.netIoAddress}/tgi/control.tgi?login=p:${this.config.username}:${this.config.password}&port=list&quit=quit`, function (error, response, body) {
-that.log.info(body);
-var state = body.substr(6, 7).split(" ").map(x => x==1);
-for (var i=0; i<state.length; i++) {
-that.setState("port"+(i+1), state[i]);
-}
-/*
-that.setState("port1", state[0]);
-that.setState("port2", state[1]);
-that.setState("port3", state[2]);
-that.setState("port4", state[3]);
-*/
-});			
+	const r = request(`http://${this.config.netIoAddress}/tgi/control.tgi?login=p:${this.config.username}:${this.config.password}&port=list&quit=quit`, function (error, response, body) {
+		that.log.info("E " + error + JSON.stringify(error))
+		that.log.info("R " + JSON.stringify(response))
+		that.log.info("B " + body);
+		if (body && body.includes("BYE")) {
+			const state = body.substr(6, 7).split(" ").map(x => x==1);
+			for (let i=0; i<state.length; i++) {
+				that.setState("port"+(i+1), state[i], true);
+			}
+			that.setState("error", "OK", true);
+			that.setState("info.connection", true, true);
+		} else {
+			that.setState("error", error ? JSON.stringify(error) : body, true);
+			that.setState("info.connection", false, true);
+		}
+	});			
 
+
+	const get = function() {
+	//	that.log.info("GET");
+		const r = request(`http://${that.config.netIoAddress}/tgi/control.tgi?login=p:${that.config.username}:${that.config.password}&port=list&quit=quit`, function (error, response, body) {
+//		const r = request(`http://192.168.2.199/tgi/control.tgi?login=p:admin:admin&port=list&quit=quit`, function (error, response, body) {
+			that.log.info(body);
+			const state = body.substr(6, 7).split(" ").map(x => x==1);
+			for (let i=0; i<state.length; i++) {
+			/*
+				that.getState('netio.0.'+"port"+(i+1), function(x,y,z) {
+					that.log.info(JSON.stringify(y) + y.val + "-" + state);
+					if (y.val != state[i])
+						that.setState("port"+(i+1), state[i], true);
+				});
+				*/
+			
+				//			that.log.info(that.getState('netio.0.'+"port"+(i+1)));
+				//			if (that.getState("port"+(i+1)) != state[i])
+					that.setState("port"+(i+1), state[i], true);
+			}
+		})
+	}
+
+	if (this.config.polling)
+		this.timer = setInterval(get, this.config.pollingInterval * 1000);
 
 		/*
 		setState examples
@@ -152,7 +180,6 @@ that.setState("port4", state[3]);
 //		result = await this.checkGroupAsync("admin", "admin");
 //		this.log.info("check group user admin group admin: " + result);
 
-		this.setState("info.connection", true, true);
 
 	}
 
@@ -162,6 +189,7 @@ that.setState("port4", state[3]);
 	 */
 	onUnload(callback) {
 		try {
+			clearInterval(this.timer);
 			this.log.info("cleaned everything up...");
 			callback();
 		} catch (e) {
@@ -175,7 +203,7 @@ that.setState("port4", state[3]);
 	 * @param {ioBroker.Object | null | undefined} obj
 	 */
 	onObjectChange(id, obj) {
-		this.log.info("YYY " + id + " " + JSON.stringify(obj))
+//		this.log.info("YYY " + id + " " + JSON.stringify(obj))
 		if (obj) {
 			// The object was changed
 			this.log.info(`object ${id} changed: ${JSON.stringify(obj)}`);
@@ -191,19 +219,19 @@ that.setState("port4", state[3]);
 	 * @param {ioBroker.State | null | undefined} state
 	 */
 	onStateChange(id, state) {
-		this.log.info("XXX " + id + " " + JSON.stringify(state))
+//		this.log.info("XXX " + id + " " + JSON.stringify(state))
 		if (state) {
 			// The state was changed
 			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
 
-var s = ["u", "u", "u", "u"];
-var p = parseInt(id.substr(-1) - 1);
-s[p] = state.val ? "1" : "0";
-var list = s.join("");
+			var s = ["u", "u", "u", "u"];
+			var p = parseInt(id.substr(-1) - 1);
+			s[p] = state.val ? "1" : "0";
+			var list = s.join("");
 			
-var x = request(`http://${this.config.netIoAddress}/tgi/control.tgi?login=p:${this.config.username}:${this.config.password}&port=${list}&quit=quit`, function (error, response, body) {
-//this.log.info(body);
-});			
+			var x = request(`http://${this.config.netIoAddress}/tgi/control.tgi?login=p:${this.config.username}:${this.config.password}&port=${list}&quit=quit`, function (error, response, body) {
+				//this.log.info(body);
+			});			
 			
 		} else {
 			// The state was deleted
