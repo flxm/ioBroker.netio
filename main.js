@@ -38,6 +38,8 @@ class Netio extends utils.Adapter {
 		// Reset the connection indicator during startup
 		this.setState("info.connection", false, true);
 
+		this.numports = 4;
+
 		// The adapters config (in the instance object everything under the attribute "native") is accessible via
 		// this.config:
 //		this.log.info("config option1: " + this.config.option1);
@@ -49,7 +51,8 @@ class Netio extends utils.Adapter {
 		Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
 		*/
 
-		await this.setObjectAsync("error", {
+/*
+		await this.setObjectAsync("info.error", {
 			type: "state",
 			common: {
 				name: "error",
@@ -60,46 +63,12 @@ class Netio extends utils.Adapter {
 			},
 			native: {},
 		});
-
-		await this.setObjectAsync("port1", {
+*/
+		await this.setObjectAsync("info.name", {
 			type: "state",
 			common: {
-				name: "port1",
-				type: "boolean",
-				role: "indicator",
-				read: true,
-				write: true,
-			},
-			native: {},
-		});
-		
-		await this.setObjectAsync("port2", {
-			type: "state",
-			common: {
-				name: "port2",
-				type: "boolean",
-				role: "indicator",
-				read: true,
-				write: true,
-			},
-			native: {},
-		});
-		await this.setObjectAsync("port3", {
-			type: "state",
-			common: {
-				name: "port3",
-				type: "boolean",
-				role: "indicator",
-				read: true,
-				write: true,
-			},
-			native: {},
-		});
-		await this.setObjectAsync("port4", {
-			type: "state",
-			common: {
-				name: "port4",
-				type: "boolean",
+				name: "name",
+				type: "string",
 				role: "indicator",
 				read: true,
 				write: true,
@@ -107,33 +76,65 @@ class Netio extends utils.Adapter {
 			native: {},
 		});
 
+		for (let p=1; p<=this.numports; p++) {
+		await this.setObjectAsync("port"+p, {
+			type: "state",
+			common: {
+				name: "port"+p,
+				type: "boolean",
+				role: "indicator",
+				read: true,
+				write: true,
+			},
+			native: {},
+		});
+		}
 		
 		
-
-
+		this.state = [];
+		for (let p=0; p<this.numports; p++) this.state.push(undefined);
+		
+		this.connected = false;
+		
+		this.setState("info.name", this.config.friendlyName, true);
+		
 		// in this template all states changes inside the adapters namespace are subscribed
 		this.subscribeStates("*");
 
 	const that = this;
 
-	const r = request(`http://${this.config.netIoAddress}:${this.config.netIoPort}/tgi/control.tgi?login=p:${this.config.username}:${this.config.password}&port=list&quit=quit`, function (error, response, body) {
-		that.log.info("E " + error + JSON.stringify(error))
-		that.log.info("R " + JSON.stringify(response))
-		that.log.info("B " + body);
+const get = function() {
+	// request port states from device
+	request(`http://${that.config.netIoAddress}:${that.config.netIoPort}/tgi/control.tgi?login=p:${that.config.username}:${that.config.password}&port=list&quit=quit`, function (error, response, body) {
+//		that.log.info("E " + error + JSON.stringify(error))
+//		that.log.info("R " + JSON.stringify(response))
+//		that.log.info("B " + body);
 		if (body && body.includes("BYE")) {
 			const state = body.substr(6, 7).split(" ").map(x => x==1);
 			for (let i=0; i<state.length; i++) {
-				that.setState("port"+(i+1), state[i], true);
+				if (state[i] !== that.state[i])
+					that.setState("port"+(i+1), state[i], true);
+					that.state[i] = state[i];
 			}
-			that.setState("error", "OK", true);
-			that.setState("info.connection", true, true);
+//			that.setState("info.error", "OK", true);
+			if (!that.connected) {
+				that.connected = true;
+				that.setState("info.connection", true, true);
+			}
 		} else {
-			that.setState("error", error ? JSON.stringify(error) : body, true);
-			that.setState("info.connection", false, true);
+			that.log.error(JSON.stringify(error));
+//			that.setState("info.error", error ? JSON.stringify(error) : body, true);
+			if (that.connected) {
+				that.connected = false;
+				that.setState("info.connection", false, true);
+			}
 		}
 	});			
+};
 
+get();
 
+/*
 	const get = function() {
 	//	that.log.info("GET");
 		const r = request(`http://${that.config.netIoAddress}:${that.config.netIoPort}/tgi/control.tgi?login=p:${that.config.username}:${that.config.password}&port=list&quit=quit`, function (error, response, body) {
@@ -141,21 +142,11 @@ class Netio extends utils.Adapter {
 			that.log.info(body);
 			const state = body.substr(6, 7).split(" ").map(x => x==1);
 			for (let i=0; i<state.length; i++) {
-			/*
-				that.getState('netio.0.'+"port"+(i+1), function(x,y,z) {
-					that.log.info(JSON.stringify(y) + y.val + "-" + state);
-					if (y.val != state[i])
-						that.setState("port"+(i+1), state[i], true);
-				});
-				*/
-			
-				//			that.log.info(that.getState('netio.0.'+"port"+(i+1)));
-				//			if (that.getState("port"+(i+1)) != state[i])
-					that.setState("port"+(i+1), state[i], true);
+				that.setState("port"+(i+1), state[i], true);
 			}
 		})
 	}
-
+*/
 	if (this.config.polling)
 		this.timer = setInterval(get, this.config.pollingInterval * 1000);
 
@@ -189,7 +180,9 @@ class Netio extends utils.Adapter {
 	 */
 	onUnload(callback) {
 		try {
+			// cancel timer
 			clearInterval(this.timer);
+			
 			this.log.info("cleaned everything up...");
 			callback();
 		} catch (e) {
@@ -224,14 +217,36 @@ class Netio extends utils.Adapter {
 			// The state was changed
 			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
 
-			let s = ["u", "u", "u", "u"];
-			let p = parseInt(id.substr(-1) - 1);
-			s[p] = state.val ? "1" : "0";
-			let list = s.join("");
 			
-			let r = request(`http://${this.config.netIoAddress}:${that.config.netIoPort}/tgi/control.tgi?login=p:${this.config.username}:${this.config.password}&port=${list}&quit=quit`, function (error, response, body) {
-				//this.log.info(body);
-			});			
+			if (id.includes("port")) {
+			
+			const s = ["u", "u", "u", "u"];
+			const p = parseInt(id.substr(-1) - 1);
+			s[p] = state.val ? "1" : "0";
+			const list = s.join("");
+			
+			const that = this;
+			
+			
+			request(`http://${this.config.netIoAddress}:${this.config.netIoPort}/tgi/control.tgi?login=p:${this.config.username}:${this.config.password}&port=${list}&quit=quit`, function (error, response, body) {
+		if (body && body.includes("BYE")) {
+//			that.setState("info.error", "OK", true);
+			if (!that.connected) {
+				that.connected = true;
+				that.setState("info.connection", true, true);
+			}
+		} else {
+			that.log.error(JSON.stringify(error));
+//			that.setState("info.error", error ? JSON.stringify(error) : body, true);
+			if (that.connected) {
+				that.connected = false;
+				that.setState("info.connection", false, true);
+			}
+		}
+
+
+			});
+			}	
 			
 		} else {
 			// The state was deleted

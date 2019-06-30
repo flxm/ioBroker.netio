@@ -1,46 +1,15 @@
 {
 	"common": {
 		"name": "netio",
-		"version": "0.0.2",
+		"version": "0.0.4",
 		"news": {
 			"0.0.1": {
 				"en": "initial release",
-				"de": "Erstveröffentlichung",
-				"ru": "Начальная версия",
-				"pt": "lançamento inicial",
-				"nl": "Eerste uitgave",
-				"fr": "Première version",
-				"it": "Versione iniziale",
-				"es": "Versión inicial",
-				"pl": "Pierwsze wydanie",
-				"zh-cn": "首次出版"
+				"de": "Erstveröffentlichung"
 			}
 		},
-		"title": "NETIO",
-		"titleLang": {
-			"en": "NETIO",
-			"de": "NETIO",
-			"ru": "NETIO",
-			"pt": "NETIO",
-			"nl": "NETIO",
-			"fr": "NETIO",
-			"it": "NETIO",
-			"es": "NETIO",
-			"pl": "NETIO",
-			"zh-cn": "NETIO"
-		},
-		"desc": {
-			"en": "Koukaam NETIO adapter by FeLIX",
-			"de": "Koukaam NETIO Adapter by FeLIX",
-			"ru": "Адаптер Koukaam NETIO",
-			"pt": "Adaptador Koukaam NETIO",
-			"nl": "Koukaam NETIO-adapter",
-			"fr": "Koukaam NETIO adaptateur",
-			"it": "Adattatore NETIO Koukaam",
-			"es": "Adaptador Koukaam NETIO",
-			"pl": "Adapter Koukaam NETIO",
-			"zh-cn": "Koukaam NETIO适配器"
-		},
+		"title": { "en": "NETIO" }, 
+		"desc": { "en": "Koukaam NETIO adapter by FeLIX" },
 		"authors": [
 			"FeLIX <git@felixm.net>"
 		],
@@ -58,7 +27,7 @@
 		"readme": "https://github.com/flxm/ioBroker.netio/blob/master/README.md",
 		"loglevel": "info",
 		"mode": "daemon",
-		"localLink": "http://%netIoAddress%/",
+		"localLink": "http://%netIoAddress%:%netIoPort%/",
 		"type": "iot-systems",
 		"compact": true,
 		"materialize": true,
@@ -74,7 +43,8 @@
 		"netIoAddress": "192.168.2.199",
 		"netIoPort": 80,
 	        "polling": true,
-                "pollingInterval": 10
+                "pollingInterval": 10,
+                "friendlyName": "NETIO 230"
 	},
 	"objects": [],
 	"instanceObjects": [
