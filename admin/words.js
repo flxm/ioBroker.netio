@@ -29,5 +29,9 @@ systemDictionary = {
 	"pollingInterval": {
 		"en": "interval",
 		"de": "Intervall"
+	},
+	"friendlyName": {
+		"en": "name",
+		"de": "Name"
 	}
 };
