@@ -15,7 +15,7 @@ systemDictionary = {
 		"de": "Password"
 	},
 	"netIoAddress": {
-		"en": "ip address",
+		"en": "IP address",
 		"de": "IP Adresse"
 	},
 	"netIoPort": {
@@ -30,8 +30,8 @@ systemDictionary = {
 		"en": "interval",
 		"de": "Intervall"
 	},
-	"friendlyName": {
-		"en": "name",
-		"de": "Name"
+	"deviceName": {
+		"en": "device name",
+		"de": "Device-Name"
 	}
 };
