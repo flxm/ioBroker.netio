@@ -1,7 +1,7 @@
 {
   "name": "iobroker.netio",
-  "version": "0.0.4",
-  "description": "Koukaam NETIO adapter",
+  "version": "0.0.5",
+  "description": "Koukaam NETIO 230 A/B/C/CS adapter",
   "author": {
     "name": "FeLIX",
     "email": "git@felixm.net"
@@ -41,7 +41,7 @@
     "sinon": "^7.3.2",
     "sinon-chai": "^3.3.0"
   },
-  "main": "main.js",
+  "main": "netio.js",
   "scripts": {
     "test:js": "mocha --opts test/mocha.custom.opts",
     "test:package": "mocha test/package --exit",

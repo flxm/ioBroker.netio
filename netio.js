@@ -38,8 +38,6 @@ class Netio extends utils.Adapter {
 		// Reset the connection indicator during startup
 		this.setState("info.connection", false, true);
 
-		this.numports = 4;
-
 		// The adapters config (in the instance object everything under the attribute "native") is accessible via
 		// this.config:
 //		this.log.info("config option1: " + this.config.option1);
@@ -76,7 +74,7 @@ class Netio extends utils.Adapter {
 			native: {},
 		});
 
-		for (let p=1; p<=this.numports; p++) {
+		for (let p=1; p<=this.config.numPorts; p++) {
 		await this.setObjectAsync("port"+p, {
 			type: "state",
 			common: {
@@ -92,11 +90,12 @@ class Netio extends utils.Adapter {
 		
 		
 		this.state = [];
-		for (let p=0; p<this.numports; p++) this.state.push(undefined);
+		for (let p=0; p<this.config.numPorts; p++)
+			this.state.push(undefined);
 		
 		this.connected = false;
 		
-		this.setState("info.name", this.config.friendlyName, true);
+		this.setState("info.name", this.config.deviceName, true);
 		
 		// in this template all states changes inside the adapters namespace are subscribed
 		this.subscribeStates("*");
@@ -110,7 +109,7 @@ const get = function() {
 //		that.log.info("R " + JSON.stringify(response))
 //		that.log.info("B " + body);
 		if (body && body.includes("BYE")) {
-			const state = body.substr(6, 7).split(" ").map(x => x==1);
+			const state = body.substr(6, 2*that.config.numPorts-1).split(" ").map(x => x==1);
 			for (let i=0; i<state.length; i++) {
 				if (state[i] !== that.state[i])
 					that.setState("port"+(i+1), state[i], true);
@@ -220,9 +219,11 @@ get();
 			
 			if (id.includes("port")) {
 			
-			const s = ["u", "u", "u", "u"];
-			const p = parseInt(id.substr(-1) - 1);
-			s[p] = state.val ? "1" : "0";
+			const s = [];
+			for (let p=0; p<this.config.numPorts; p++)
+				s.push("u");
+			const index = parseInt(id.substr(-1) - 1);
+			s[index] = state.val ? "1" : "0";
 			const list = s.join("");
 			
 			const that = this;
@@ -230,14 +231,12 @@ get();
 			
 			request(`http://${this.config.netIoAddress}:${this.config.netIoPort}/tgi/control.tgi?login=p:${this.config.username}:${this.config.password}&port=${list}&quit=quit`, function (error, response, body) {
 		if (body && body.includes("BYE")) {
-//			that.setState("info.error", "OK", true);
 			if (!that.connected) {
 				that.connected = true;
 				that.setState("info.connection", true, true);
 			}
 		} else {
 			that.log.error(JSON.stringify(error));
-//			that.setState("info.error", error ? JSON.stringify(error) : body, true);
 			if (that.connected) {
 				that.connected = false;
 				that.setState("info.connection", false, true);

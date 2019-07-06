@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "netio",
-		"version": "0.0.4",
+		"version": "0.0.5",
 		"news": {
 			"0.0.1": {
 				"en": "initial release",
@@ -9,18 +9,20 @@
 			}
 		},
 		"title": { "en": "NETIO" }, 
-		"desc": { "en": "Koukaam NETIO adapter by FeLIX" },
+		"desc": { "en": "Koukaam NETIO 230 A/B/C/CS adapter by FeLIX" },
 		"authors": [
 			"FeLIX <git@felixm.net>"
 		],
 		"keywords": [
 			"ioBroker",
 			"adapter",
-			"netio"
+			"netio",
+			"ip",
+			"socket"
 		],
 		"license": "MIT",
 		"platform": "Javascript/Node.js",
-		"main": "main.js",
+		"main": "netio.js",
 		"icon": "netio.png",
 		"enabled": true,
 		"extIcon": "https://raw.githubusercontent.com/flxm/ioBroker.netio/master/admin/netio.png",
@@ -28,7 +30,7 @@
 		"loglevel": "info",
 		"mode": "daemon",
 		"localLink": "http://%netIoAddress%:%netIoPort%/",
-		"type": "iot-systems",
+		"type": "hardware",
 		"compact": true,
 		"materialize": true,
 		"dependencies": [
@@ -44,7 +46,8 @@
 		"netIoPort": 80,
 	        "polling": true,
                 "pollingInterval": 10,
-                "friendlyName": "NETIO 230"
+                "deviceName": "NETIO 230",
+                "numPorts": 4
 	},
 	"objects": [],
 	"instanceObjects": [
