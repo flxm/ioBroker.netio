@@ -229,8 +229,39 @@ get();
 			const that = this;
 			
 			
-			request(`http://${this.config.netIoAddress}:${this.config.netIoPort}/tgi/control.tgi?login=p:${this.config.username}:${this.config.password}&port=${list}&quit=quit`, function (error, response, body) {
-		if (body && body.includes("BYE")) {
+			request(`http://${this.config.netIoAddress}:${this.config.netIoPort}/tgi/control.tgi?login=p:${this.config.username}:${this.config.password}&port=${list}&port=list&quit=quit`, function (error, response, body) {
+
+		if (body && body.includes("OK")) {
+			const state = body.substr(13, 2*that.config.numPorts-1).split(" ").map(x => x==1);
+			for (let i=0; i<state.length; i++) {
+				if (state[i] !== that.state[i])
+					that.setState("port"+(i+1), state[i], true);
+					that.state[i] = state[i];
+			}
+//			that.setState("info.error", "OK", true);
+			if (!that.connected) {
+				that.connected = true;
+				that.setState("info.connection", true, true);
+			}
+		} else {
+			that.log.error(JSON.stringify(error));
+//			that.setState("info.error", error ? JSON.stringify(error) : body, true);
+			if (that.connected) {
+				that.connected = false;
+				that.setState("info.connection", false, true);
+			}
+		}
+
+
+
+
+
+
+
+
+
+/*
+		if (body && body.includes("OK")) {
 			if (!that.connected) {
 				that.connected = true;
 				that.setState("info.connection", true, true);
@@ -242,6 +273,11 @@ get();
 				that.setState("info.connection", false, true);
 			}
 		}
+*/
+
+
+
+
 
 
 			});
