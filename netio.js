@@ -67,7 +67,7 @@ class Netio extends utils.Adapter {
 			common: {
 				name: "name",
 				type: "string",
-				role: "indicator",
+				role: "info.name",
 				read: true,
 				write: true,
 			},
@@ -80,7 +80,7 @@ class Netio extends utils.Adapter {
 			common: {
 				name: "port"+p,
 				type: "boolean",
-				role: "indicator",
+				role: "switch.power",
 				read: true,
 				write: true,
 			},
