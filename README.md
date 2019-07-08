@@ -1,5 +1,5 @@
-
 ![Logo](admin/netio.png)
+
 # ioBroker.netio
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.netio.svg)](https://www.npmjs.com/package/iobroker.netio)
@@ -15,14 +15,19 @@
 
 Koukaam NETIO adapter. created by FeLIX
 
-Support Devices: NETIO 230A/B/C/CS
-
 ![Device](admin/netio230.png)
+
+This adapter allows remotely controlling the ports of an IP socket switch.
+Using polling, the remote state is also synchronized when sockets are
+operated directly on the device.
+
+Supported devices: NETIO 230A/B/C/CS
+
 
 ## Changelog
 
 ### 0.0.1
-* (FeLIX) initial release
+* initial release
 
 ### 0.0.2
 * polling support
@@ -35,6 +40,9 @@ Support Devices: NETIO 230A/B/C/CS
 
 ### 0.0.5
 * ready for npm release
+
+### 0.1.0
+* Optimizations, code cleanup
 
 ## License
 MIT License
