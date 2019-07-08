@@ -58,9 +58,7 @@ class Netio extends utils.Adapter {
 			});
 		}
 		
-		this.state = [];
-		for (let p=0; p<this.config.numPorts; p++)
-			this.state.push(undefined);
+		this.state = Array(this.config.numPorts).fill();
 		
 		this.connected = false;
 		
@@ -71,7 +69,7 @@ class Netio extends utils.Adapter {
 
 		const that = this;
 
-		const get = function() {
+		const requestState = function() {
 			// request port states from device
 			const url = `http://${that.config.netIoAddress}:${that.config.netIoPort}/tgi/control.tgi?login=p:${that.config.username}:${that.config.password}&port=list&quit=quit`; 
 			request(url, function (error, response, body) {
@@ -79,7 +77,9 @@ class Netio extends utils.Adapter {
 				// that.log.info("R " + JSON.stringify(response))
 				// that.log.info("B " + body);
 				if (that.state && body && body.includes("BYE")) {
-					const state = body.substr(6, 2*that.config.numPorts-1).split(" ").map(x => x==1);
+					const state = body.substr(6, 2*that.config.numPorts-1)
+							.split(" ")
+							.map(x => x==1);
 					for (let i=0; i<state.length; i++) {
 						if (state[i] !== that.state[i]) {
 							that.setState("port"+(i+1), state[i], true);
@@ -97,14 +97,14 @@ class Netio extends utils.Adapter {
 						that.setState("info.connection", false, true);
 					}
 				}
-			});			
+			});
 		};
 
-		get();
+		requestState();
 
 		this.timer = null;
 		if (this.config.polling)
-			this.timer = setInterval(get, this.config.pollingInterval * 1000);
+			this.timer = setInterval(requestState, this.config.pollingInterval * 1000);
 	}
 
 	/**
@@ -152,9 +152,7 @@ class Netio extends utils.Adapter {
 			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
 
 			if (id.includes("port")) {
-				const s = [];
-				for (let p=0; p<this.config.numPorts; p++)
-					s.push("u");
+				const s = Array(this.config.numPorts).fill("u");
 
 				const index = parseInt(id.substr(-1)) - 1;
 				s[index] = state.val ? "1" : "0";
@@ -162,10 +160,12 @@ class Netio extends utils.Adapter {
 				
 				const that = this;
 				
-				const url = `http://${this.config.netIoAddress}:${this.config.netIoPort}/tgi/control.tgi?login=p:${this.config.username}:${this.config.password}&port=${list}&port=list&quit=quit`; 
+				const url = `http://${this.config.netIoAddress}:${this.config.netIoPort}/tgi/control.tgi?login=p:${this.config.username}:${this.config.password}&port=${list}&port=list&quit=quit`;
 				request(url, function (error, response, body) {
 					if (that.state && body && body.includes("OK")) {
-						const state = body.substr(13, 2*that.config.numPorts-1).split(" ").map(x => x==1);
+						const state = body.substr(13, 2*that.config.numPorts-1)
+								.split(" ")
+								.map(x => x==1);
 						for (let i=0; i<state.length; i++) {
 							if (state[i] !== that.state[i]) {
 								that.setState("port"+(i+1), state[i], true);
