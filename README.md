@@ -26,23 +26,26 @@ Supported devices: NETIO 230A/B/C/CS
 
 ## Changelog
 
-### 0.0.1
-* initial release
+### 0.1.1
+* Vulnerability fix
 
-### 0.0.2
-* polling support
-
-### 0.0.3
-* refinements
-
-### 0.0.4
-* improved state logic
+### 0.1.0
+* Optimizations, code cleanup
 
 ### 0.0.5
 * ready for npm release
 
-### 0.1.0
-* Optimizations, code cleanup
+### 0.0.4
+* improved state logic
+
+### 0.0.3
+* refinements
+
+### 0.0.2
+* polling support
+
+### 0.0.1
+* initial release
 
 ## License
 MIT License
