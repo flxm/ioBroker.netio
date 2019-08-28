@@ -78,8 +78,8 @@ class Netio extends utils.Adapter {
 				// that.log.info("B " + body);
 				if (that.state && body && body.includes("BYE")) {
 					const state = body.substr(6, 2*that.config.numPorts-1)
-							.split(" ")
-							.map(x => x==1);
+						.split(" ")
+						.map(x => x==1);
 					for (let i=0; i<state.length; i++) {
 						if (state[i] !== that.state[i]) {
 							that.setState("port"+(i+1), state[i], true);
@@ -164,8 +164,8 @@ class Netio extends utils.Adapter {
 				request(url, function (error, response, body) {
 					if (that.state && body && body.includes("OK")) {
 						const state = body.substr(13, 2*that.config.numPorts-1)
-								.split(" ")
-								.map(x => x==1);
+							.split(" ")
+							.map(x => x==1);
 						for (let i=0; i<state.length; i++) {
 							if (state[i] !== that.state[i]) {
 								that.setState("port"+(i+1), state[i], true);

@@ -1,6 +1,6 @@
 {
   "name": "iobroker.netio",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Koukaam NETIO 230 A/B/C/CS adapter",
   "author": {
     "name": "FeLIX",
@@ -34,7 +34,7 @@
     "axios": "^0.19.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
-    "eslint": "^6.0.1",
+    "eslint": "^6.2.2",
     "gulp": "^4.0.2",
     "mocha": "^6.1.4",
     "proxyquire": "^2.1.0",

@@ -26,6 +26,9 @@ Supported devices: NETIO 230A/B/C/CS
 
 ## Changelog
 
+### 0.1.2
+* Vulnerability fix
+
 ### 0.1.1
 * Vulnerability fix
 

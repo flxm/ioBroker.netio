@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "netio",
-		"version": "0.1.1",
+		"version": "0.1.2",
 		"news": {
 			"0.0.1": {
 				"en": "initial release"
@@ -13,6 +13,9 @@
 				"en": "cleanup"
 			},
 			"0.1.1": {
+				"en": "vulnerability fix"
+			},
+			"0.1.2": {
 				"en": "vulnerability fix"
 			}
 		},
